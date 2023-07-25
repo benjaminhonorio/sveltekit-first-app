@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { selectedRoutes } from '../stores';
 	import type { Route } from '../types/route.type';
+
 	export let routes: Route[];
+
 	let ids: string[] = [];
 	$: $selectedRoutes = new Set(ids);
-	$: {
-		console.log($selectedRoutes);
-	}
 </script>
 
 <div>
