@@ -12,14 +12,17 @@
 
 	let marker: mapboxgl.Marker;
 	let element: HTMLDivElement;
-	let elementPopup: HTMLDivElement;
+	let elementPopUp: HTMLDivElement;
 
 	onMount(() => {
-		marker = new mapboxgl.Marker({ element, anchor: 'bottom' });
+		marker = new mapboxgl.Marker({
+			...($$slots.default && { element }),
+			anchor: 'bottom'
+		});
 		if (popup) {
 			const popupEl = new mapboxgl.Popup({ offset: 30, closeButton: false });
-			if (elementPopup.hasChildNodes()) {
-				popupEl.setDOMContent(elementPopup);
+			if (elementPopUp.hasChildNodes()) {
+				popupEl.setDOMContent(elementPopUp);
 			} else {
 				popupEl.setText(label);
 			}
@@ -38,6 +41,6 @@
 	<slot />
 </div>
 
-<div bind:this={elementPopup}>
+<div bind:this={elementPopUp}>
 	<slot name="popup" />
 </div>
