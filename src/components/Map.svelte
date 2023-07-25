@@ -1,40 +1,44 @@
 <script lang="ts">
-	import mapboxgl from 'mapbox-gl';
-	import { onMount } from 'svelte';
-	import { env } from '$env/dynamic/public';
-	import { selectedRoutes } from '$lib/stores';
-	import type { Marker } from '../types/marker.type';
-	import { derived, readable } from 'svelte/store';
+	import { mapboxgl, key } from '$lib/mapbox/config';
+	import { onMount, setContext } from 'svelte';
 
-	export let markers: Marker[];
+	export let center: [number, number];
+	export let zoom: number;
+	export let style: string;
 
-	let map;
+	let container: HTMLDivElement;
+	let map: mapboxgl.Map;
+
+	setContext(key, {
+		getMap: () => map
+	});
+
 	onMount(() => {
-		mapboxgl.accessToken = env.PUBLIC_MAPBOX_ACCESS_TOKEN;
 		map = new mapboxgl.Map({
-			container: 'map',
-			style: env.PUBLIC_MAP_STYLE,
-			center: [-78.5790110564719, -9.061119497310544],
-			zoom: 13
+			container,
+			style,
+			center,
+			zoom
 		});
+		return () => {
+			map.remove();
+		};
 	});
-
-	const data = readable(markers);
-
-	const filtered = derived([selectedRoutes, data], ([$selectedRoutes, $data]) => {
-		return $data.filter((marker) => $selectedRoutes.has(marker.route._id));
-	});
-
-	$: {
-		console.log($filtered); // filter to console for now
-	}
 </script>
 
-<div id="map" />
+<svelte:head>
+	<link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+</svelte:head>
+
+<div bind:this={container}>
+	{#if map}
+		<slot />
+	{/if}
+</div>
 
 <style>
-	#map {
-		width: 100vw;
-		height: 100vh;
+	div {
+		width: 100%;
+		height: 100%;
 	}
 </style>

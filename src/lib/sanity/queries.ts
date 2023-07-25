@@ -1,15 +1,7 @@
-import { env } from '$env/dynamic/public';
-import { createClient } from '@sanity/client';
-import type { Marker } from '../types/marker.type';
-import type { Place } from '../types/place.type';
-import type { Route } from '../types/route.type';
-
-export const client = createClient({
-	projectId: env.PUBLIC_SANITY_PROJECT_ID,
-	dataset: env.PUBLIC_SANITY_DATASET,
-	apiVersion: env.PUBLIC_SANITY_API_VERSION,
-	useCdn: true
-});
+import type { Marker } from '../../types/marker.type';
+import type { Place } from '../../types/place.type';
+import type { Route } from '../../types/route.type';
+import { client } from './client';
 
 export const getMarkers = (): Promise<Marker[]> => {
 	return client.fetch(
