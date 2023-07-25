@@ -4,6 +4,7 @@
 	import MapMarker from './Marker.svelte';
 	import type { Marker } from '../types/marker.type';
 	import { selectedRoutes } from '../stores';
+	import PopUp from './PopUp.svelte';
 
 	export let markers: Marker[];
 
@@ -15,8 +16,18 @@
 
 <div>
 	<Map {center} {style} {zoom}>
-		{#each selectedMarkers as { coordinates, title, _id } (_id)}
-			<MapMarker lat={coordinates.lat} lng={coordinates.lng} label={title} />
+		{#each selectedMarkers as marker (marker._id)}
+			<MapMarker lat={marker.coordinates.lat} lng={marker.coordinates.lng}>
+				<img
+					width="30px"
+					height="30px"
+					src={marker.route.icon_url}
+					alt="{marker.title} route icon"
+				/>
+				<svelte:fragment slot="popup">
+					<PopUp {marker} />
+				</svelte:fragment>
+			</MapMarker>
 		{/each}
 	</Map>
 </div>
