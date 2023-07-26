@@ -20,7 +20,7 @@
 			anchor: 'bottom'
 		});
 		if (popup) {
-			const popupEl = new mapboxgl.Popup({ offset: 30, closeButton: false });
+			const popupEl = new mapboxgl.Popup({ offset: 30, closeButton: false, anchor: 'bottom' });
 			if (elementPopUp.hasChildNodes()) {
 				popupEl.setDOMContent(elementPopUp);
 			} else {

@@ -5,8 +5,7 @@
 <div class="app">
 	<header>
 		<nav>
-			<a href="/">Culturalismo</a>
-			<a href="/places/x">Sitio</a>
+			<a href="/"><h1>Culturalismo</h1></a>
 		</nav>
 	</header>
 	<main>
@@ -18,5 +17,8 @@
 	main {
 		width: 100%;
 		height: 100%;
+	}
+	a {
+		text-decoration: none;
 	}
 </style>

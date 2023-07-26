@@ -4,10 +4,10 @@
 	import Map from './Map.svelte';
 	import MapMarker from './Marker.svelte';
 	import PopUp from './PopUp.svelte';
-	import type { Marker } from '../types/marker.type';
 	import { selectedRoutes } from '../stores';
+	import { page } from '$app/stores';
 
-	export let markers: Marker[];
+	export let markers = $page.data.markers;
 
 	const center: [number, number] = [-78.5790110564719, -9.061119497310544];
 	const zoom = 11;

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { selectedRoutes } from '../stores';
-	import type { Route } from '../types/route.type';
+	import { page } from '$app/stores';
 
-	export let routes: Route[];
+	export let routes = $page.data.routes;
 
 	let ids: string[] = [];
 	$: $selectedRoutes = new Set(ids);
