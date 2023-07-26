@@ -6,7 +6,7 @@
 	const { title, featured_image, description, slug } = marker;
 </script>
 
-<a href={slug}>
+<a href="/places/{slug}">
 	<figure>
 		<img src={featured_image.url} alt={featured_image.altText} />
 	</figure>
