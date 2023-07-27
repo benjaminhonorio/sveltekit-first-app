@@ -5,9 +5,9 @@
 	export let center: [number, number];
 	export let zoom: number;
 	export let style: string;
+	let map: mapboxgl.Map;
 
 	let container: HTMLDivElement;
-	let map: mapboxgl.Map;
 
 	setContext(key, {
 		getMap: () => map
@@ -24,6 +24,14 @@
 			map.remove();
 		};
 	});
+
+	export function fitBounds(bbox: mapboxgl.LngLatBoundsLike) {
+		map.fitBounds(bbox, {
+			padding: 100,
+			duration: 1700,
+			maxZoom: 13
+		});
+	}
 </script>
 
 <svelte:head>

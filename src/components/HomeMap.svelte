@@ -1,35 +1,36 @@
 <script lang="ts">
-	import { fly } from 'svelte/transition';
 	import { env } from '$env/dynamic/public';
 	import Map from './Map.svelte';
-	import MapMarker from './Marker.svelte';
-	import PopUp from './PopUp.svelte';
 	import { selectedRoutes } from '../stores';
 	import { page } from '$app/stores';
+	import PlaceMarker from './PlaceMarker.svelte';
+	import PopUp from './PopUp.svelte';
+	import type mapboxgl from 'mapbox-gl';
+	import * as turf from '@turf/turf';
 
-	export let markers = $page.data.markers;
-
+	const markers = $page.data.markers;
 	const center: [number, number] = [-78.5790110564719, -9.061119497310544];
 	const zoom = 11;
+	let mapComponent: Map;
 	const style = env.PUBLIC_MAP_STYLE;
 	$: selectedMarkers = markers.filter((marker) => $selectedRoutes.has(marker.route._id));
+	$: {
+		const activeMarkersCoords = selectedMarkers.map(({ coordinates: { lng, lat } }) => [lng, lat]);
+		if (activeMarkersCoords.length) {
+			console.log(activeMarkersCoords);
+			const points = turf.points(activeMarkersCoords);
+			const bbox = turf.bbox(points);
+			mapComponent.fitBounds(bbox as mapboxgl.LngLatBoundsLike);
+		}
+	}
 </script>
 
 <div>
-	<Map {center} {style} {zoom}>
+	<Map bind:this={mapComponent} {center} {style} {zoom}>
 		{#each selectedMarkers as marker (marker._id)}
-			<MapMarker lat={marker.coordinates.lat} lng={marker.coordinates.lng}>
-				<img
-					transition:fly={{ y: -30, duration: 300 }}
-					width="30px"
-					height="30px"
-					src={marker.route.icon_url}
-					alt="{marker.title} marker icon"
-				/>
-				<svelte:fragment slot="popup">
-					<PopUp {marker} />
-				</svelte:fragment>
-			</MapMarker>
+			<PlaceMarker {marker}>
+				<PopUp {marker} />
+			</PlaceMarker>
 		{/each}
 	</Map>
 </div>

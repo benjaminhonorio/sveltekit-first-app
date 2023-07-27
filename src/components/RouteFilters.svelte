@@ -2,9 +2,9 @@
 	import { selectedRoutes } from '../stores';
 	import { page } from '$app/stores';
 
-	export let routes = $page.data.routes;
-
+	const routes = $page.data.routes;
 	let ids: string[] = [];
+
 	$: $selectedRoutes = new Set(ids);
 </script>
 
